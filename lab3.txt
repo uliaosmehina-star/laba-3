@@ -1,0 +1,92 @@
+4.
+$files = Get-ChildItem "C:\Windows" -File | Where-Object { $_.Length -gt 10000 } | Sort-Object Length | Format-Table Name, Length
+$files | Out-File -FilePath "D:\4.txt" -Encoding ASCII
+
+
+5.
+$properties = (Get-Process | Select-Object -First 1 | Get-Member -MemberType Property).Name
+$properties | Out-File -FilePath "D:\5.txt" -Encoding ASCII
+$properties.Count
+
+
+6.
+$processes = Get-Process | Where { $_.BasePriority -gt 7 } | 
+Select-Object Name, BasePriority, Company
+$processesSorted = $processes | Sort-Object ProcessName
+$processesSorted | Out-File -FilePath "D:\6.txt" -Encoding ASCII
+$processesSorted
+
+7.
+Get-Process | Sort-Object TotalProcessorTime |
+ConvertTo-Html -Property ProcessName, Id, PriorityClass, UserProcessorTime, TotalProcessorTime > 'D:\777.htm'  
+
+8.
+$path = "C:\Windows"
+$summ = 0
+$files = Get-ChildItem -Path $path -Include *.bmp, *.jpg  -Recurse -ErrorAction SilentlyContinue
+foreach ($file in $files) {$summ += $file.Length}
+Write-Host "Суммарный размер файлов bmp и jpg: $summ байт"
+
+
+9.
+Get-wmiobject -Class Win32_Processor | Format-list *
+
+
+10.
+$mdir = (Measure-Command {dir}).TotalSeconds
+$mps = (Measure-Command {ps}).TotalSeconds
+$mdir | Measure-Object -Maximum -Minimum -Average
+$mps | Measure-Object -Maximum -Minimum -Average
+
+
+
+Foreach ("E:\ОССТ\3" "E:\ОССТ\3" "E:\ОССТ\3" ) {dir}
+
+
+
+
+
+
+$dirt = @()
+$pst = @()
+
+1..5 ForEach-Object {$dirt += (Measure-Command {dir C:\ }).TotalSeconds; $pst += (Measure-Command { ps }).TotalSeconds }
+$avg = ($dirt |Measure-Object -Avrage).Average + ($dirt |Measure-Object -Avrage).Average / 2
+" среднее dir: $([Math]::Round(($dirt | Measure-Object - Average).Average, 2)) ms "
+" среднее ps: $([Math]::Round(($pst | Measure-Object - Average).Average, 2)) ms "
+" макс: $(($dirt + $pst  | Measure-Object - Maximum).Maximum, 2)) ms "
+" мин: $(($dirt + $pst  | Measure-Object - Minimum).Minimum 2)) ms "
+
+
+
+
+
+
+
+
+
+
+
+
+11.
+бригада 2
+
+1.
+$nums = Get-Content 'D:\nn.txt' | ForEach-Object {[int]$_}
+$count = ($nums | Sort-Object -Unique).Count
+Write-Host "Количество различных чисел: $count"
+
+2.
+$nums = Get-Content 'D:\nn.txt' | ForEach-Object {[int]$_}
+$max = ($nums | Measure-Object -Maximum).Maximum
+$maxCount = ($nums | Where-Object { $_ -eq $max }).Count
+Write-Host "Наибольшее число: $max"
+Write-Host "Количество наибольших чисел: $maxCount"
+
+
+
+
+
+
+
+
